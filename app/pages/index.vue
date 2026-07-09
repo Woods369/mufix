@@ -155,6 +155,7 @@ useHead({
   title: 'Mufix – MIDI Keyboard & Guitar Repairs | Lichfield, Tamworth, Stafford',
   meta: [
     { name: 'description', content: 'Professional MIDI keyboard and electric guitar repairs in Lichfield, Tamworth, Sutton Coldfield, Stafford and the Midlands. Free collection, fixed price quotes, fast turnaround. Repairs tested by real musicians.' },
+    { name: 'google-site-verification', content: 'aBYh5lF-YWR6ZeZ76fsrAdqnuYkmwu3pZWi9pLxhhbo' },
   ],
   link: [
     { rel: 'stylesheet', href: 'https://assets.calendly.com/assets/external/widget.css' },
