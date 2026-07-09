@@ -132,6 +132,57 @@
       </div>
     </section>
 
+    <!-- FAQ -->
+    <section id="faq" class="section">
+      <div class="container faq-container">
+        <h2 class="section-title">Frequently asked questions</h2>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary class="faq-question">How long does a typical repair take?</summary>
+            <div class="faq-answer">
+              <p>Most repairs are completed within <strong>3&ndash;7 working days</strong> from collection. Simple setup work on guitars can be turned around in 24&ndash;48 hours. We'll give you a realistic timeframe after the free diagnostic.</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-question">How much does a repair cost?</summary>
+            <div class="faq-answer">
+              <p>We give a <strong>fixed price quote</strong> after the free diagnostic check &mdash; no surprise add-ons. Simple jobs start from around <strong>&pound;25</strong>, with most repairs falling in the <strong>&pound;35&ndash;&pound;80</strong> range. You approve the price before any work begins.</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-question">Do you offer a warranty on repairs?</summary>
+            <div class="faq-answer">
+              <p>All repairs come with a <strong>90-day warranty</strong> on parts and labour. If the same fault reappears, we'll fix it free of charge.</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-question">Do I need to bring my gear to you?</summary>
+            <div class="faq-answer">
+              <p>Nope. We offer <strong>free collection and drop-off</strong> across Lichfield, Tamworth, Sutton Coldfield and Stafford. You can also drop off at our Lichfield base if you prefer.</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-question">Can you work on any brand of MIDI keyboard or guitar?</summary>
+            <div class="faq-answer">
+              <p>We work on most makes and models. For MIDI keyboards: Roland, Korg, Yamaha, Novation, Akai, Arturia, Native Instruments and more. For guitars: Fender, Gibson, Ibanez, PRS, Squier, Epiphone and any custom builds. If you're unsure, drop us a message and we'll let you know.</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-question">How do I know if my gear can be fixed?</summary>
+            <div class="faq-answer">
+              <p>Most issues are fixable. Dead keys, crackling outputs, broken jacks, power failures, loose fretwire &mdash; we've seen it all. The free diagnostic will tell you exactly what's wrong and whether it's economical to repair. We'll be straight with you if it's not worth fixing.</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-question">What's included in a MIDI keyboard diagnostic?</summary>
+            <div class="faq-answer">
+              <p>We check every key for velocity response, test all outputs (MIDI, USB, audio), inspect the power supply and capacitors, and look for broken traces on the circuit board. You get a detailed explanation of the fault and a fixed price to fix it.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
     <!-- Contact -->
     <section id="contact" class="section section-alt">
       <div class="container">
@@ -173,9 +224,120 @@ useHead({
         name: 'Mufix',
         url: 'https://mufix.co.uk',
         email: 'fix@mufix.co.uk',
+        telephone: '07814 200476',
+        image: 'https://www.mufix.co.uk/musical-instrument-circuitboard.png',
         description: 'MIDI keyboard and electric guitar repair services covering Lichfield, Tamworth, Sutton Coldfield, Stafford, and the Midlands.',
         areaServed: ['Lichfield', 'Tamworth', 'Sutton Coldfield', 'Stafford', 'Midlands'],
         priceRange: '££',
+        openingHoursSpecification: [
+          {
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+            opens: '09:00',
+            closes: '18:00',
+          },
+          {
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: ['Saturday'],
+            opens: '10:00',
+            closes: '14:00',
+          },
+        ],
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Lichfield',
+          addressRegion: 'Staffordshire',
+          addressCountry: 'GB',
+        },
+        hasOfferCatalog: {
+          '@type': 'OfferCatalog',
+          name: 'Instrument repair services',
+          itemListElement: [
+            {
+              '@type': 'Offer',
+              itemOffered: {
+                '@type': 'Service',
+                name: 'MIDI Keyboard Repair',
+                description: 'Circuit-board level diagnosis and repair for MIDI controllers, synthesisers, stage pianos and electronic keyboards.',
+                areaServed: ['Lichfield', 'Tamworth', 'Sutton Coldfield', 'Stafford', 'Midlands'],
+              },
+            },
+            {
+              '@type': 'Offer',
+              itemOffered: {
+                '@type': 'Service',
+                name: 'Electric Guitar Repair',
+                description: 'Full setup, electronics repair, pickup swaps, fret work and structural repairs for electric guitars and basses.',
+                areaServed: ['Lichfield', 'Tamworth', 'Sutton Coldfield', 'Stafford', 'Midlands'],
+              },
+            },
+          ],
+        },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: [
+          {
+            '@type': 'Question',
+            name: 'How long does a typical repair take?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Most repairs are completed within 3–7 working days from collection. Simple setup work on guitars can be turned around in 24–48 hours. We give you a realistic timeframe after the free diagnostic.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'How much does a repair cost?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'We give a fixed price quote after the free diagnostic check — no surprise add-ons. Simple jobs start from around £25, with most repairs falling in the £35–£80 range. You approve the price before any work begins.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Do you offer a warranty on repairs?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'All repairs come with a 90-day warranty on parts and labour. If the same fault reappears, we fix it free of charge.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Do I need to bring my gear to you?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'No — we offer free collection and drop-off across Lichfield, Tamworth, Sutton Coldfield and Stafford. You can also drop off at our Lichfield base if you prefer.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Can you work on any brand of MIDI keyboard or guitar?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'We work on most makes and models: Roland, Korg, Yamaha, Novation, Akai, Arturia, Native Instruments for MIDI keyboards, and Fender, Gibson, Ibanez, PRS, Squier, Epiphone for guitars. Drop us a message if you are unsure.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'How do I know if my gear can be fixed?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Most issues are fixable — dead keys, crackling outputs, broken jacks, power failures, loose fretwire. The free diagnostic tells you exactly what is wrong and whether it is economical to repair.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'What is included in a MIDI keyboard diagnostic?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'We check every key for velocity response, test all outputs (MIDI, USB, audio), inspect the power supply and capacitors, and look for broken traces on the circuit board. You get a detailed explanation of the fault and a fixed price to fix it.',
+            },
+          },
+        ],
       }),
     },
   ],
@@ -523,5 +685,66 @@ useHead({
 .contact-btn {
   display: table;
   margin: 0 auto;
+}
+
+/* FAQ */
+.faq-container {
+  max-width: 720px;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.faq-item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.faq-item[open] {
+  border-color: var(--purple);
+}
+
+.faq-question {
+  padding: 1rem 1.25rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.faq-question::-webkit-details-marker {
+  display: none;
+}
+
+.faq-question::after {
+  content: '+';
+  font-size: 1.25rem;
+  color: var(--purple);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.faq-item[open] .faq-question::after {
+  content: '−';
+}
+
+.faq-answer {
+  padding: 0 1.25rem 1rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.faq-answer p {
+  margin: 0;
 }
 </style>
