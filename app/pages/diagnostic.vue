@@ -42,13 +42,23 @@
     <!-- Piano -->
     <section class="section section-alt piano-section">
       <div class="piano-wrapper">
-        <div class="piano">
+        <div
+          class="piano"
+          :style="{
+            height: KEY_H + 'px',
+            width: whiteKeys.length * KEY_W + 'px'
+          }"
+        >
           <div
             v-for="key in whiteKeys"
             :key="'w'+key.midi"
             class="piano-key white"
             :class="{ active: activeNotes.has(key.midi), tested: testedNotes.has(key.midi) }"
-            :style="{ left: key.left + 'px' }"
+            :style="{
+              left: key.left + 'px',
+              width: KEY_W + 'px',
+              height: KEY_H + 'px'
+            }"
           >
             <span class="key-label">{{ key.note }}</span>
           </div>
@@ -57,7 +67,11 @@
             :key="'b'+key.midi"
             class="piano-key black"
             :class="{ active: activeNotes.has(key.midi), tested: testedNotes.has(key.midi) }"
-            :style="{ left: key.left + 'px' }"
+            :style="{
+              left: key.left + 'px',
+              width: BLACK_W + 'px',
+              height: BLACK_H + 'px'
+            }"
           >
             <span class="key-label">{{ key.note }}</span>
           </div>
@@ -359,8 +373,6 @@ useHead({ title: 'MIDI Keyboard Diagnostic Tool – Mufix' })
 
 .piano {
   position: relative;
-  height: v-bind(KEY_H + 'px');
-  width: v-bind(whiteKeys.length * KEY_W + 'px');
 }
 
 .piano-key {
@@ -375,8 +387,6 @@ useHead({ title: 'MIDI Keyboard Diagnostic Tool – Mufix' })
 
 .piano-key.white {
   position: absolute;
-  width: v-bind(KEY_W + 'px');
-  height: v-bind(KEY_H + 'px');
   background: #e8e4ee;
   border: 1px solid #ccc;
   border-radius: 0 0 6px 6px;
@@ -397,8 +407,6 @@ useHead({ title: 'MIDI Keyboard Diagnostic Tool – Mufix' })
 
 .piano-key.black {
   position: absolute;
-  width: v-bind(BLACK_W + 'px');
-  height: v-bind(BLACK_H + 'px');
   background: #1a1820;
   border: 1px solid #333;
   border-radius: 0 0 4px 4px;

@@ -4,9 +4,6 @@
 
     <!-- Hero -->
     <section class="hero">
-      <div class="hero-badge">
-        <span class="hero-badge-text">3 gen<br />of repair</span>
-      </div>
       <div class="container hero-content">
         <h1 class="hero-title">
           MIDI keyboards &amp;<br />
@@ -192,32 +189,6 @@ useHead({
 }
 
 /* Hero */
-.hero-badge {
-  position: absolute;
-  top: 7rem;
-  left: 2rem;
-  width: 5rem;
-  height: 5rem;
-  border-radius: 50%;
-  background: #fff;
-  color: #0a090c;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  line-height: 1.15;
-  z-index: 5;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-}
-
-.hero-badge-text {
-  font-size: 0.625rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
 .hero {
   min-height: 96svh;
   display: flex;
