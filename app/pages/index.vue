@@ -125,8 +125,8 @@
           </div>
           <div class="step">
             <span class="step-num">03</span>
-            <h4>Repaired &amp; returned</h4>
-            <p>Fixed, tested, and dropped back off. You don't even have to leave the house.</p>
+            <h4>Repaired, tested &amp; returned</h4>
+            <p>Fixed, tested by real musicians, and dropped back off. You don't even have to leave the house.</p>
           </div>
         </div>
       </div>
@@ -154,7 +154,7 @@ import { KeyboardMusic, Guitar, MapPin } from 'lucide-vue-next'
 useHead({
   title: 'Mufix – MIDI Keyboard & Guitar Repairs | Lichfield, Tamworth, Stafford',
   meta: [
-    { name: 'description', content: 'Professional MIDI keyboard and electric guitar repairs in Lichfield, Tamworth, Sutton Coldfield, and Stafford. Free collection, fixed price quotes, fast turnaround.' },
+    { name: 'description', content: 'Professional MIDI keyboard and electric guitar repairs in Lichfield, Tamworth, Sutton Coldfield, Stafford and the Midlands. Free collection, fixed price quotes, fast turnaround. Repairs tested by real musicians.' },
   ],
   link: [
     { rel: 'stylesheet', href: 'https://assets.calendly.com/assets/external/widget.css' },
@@ -172,8 +172,8 @@ useHead({
         name: 'Mufix',
         url: 'https://mufix.co.uk',
         email: 'fix@mufix.co.uk',
-        description: 'MIDI keyboard and electric guitar repair services covering Lichfield, Tamworth, Sutton Coldfield, and Stafford.',
-        areaServed: ['Lichfield', 'Tamworth', 'Sutton Coldfield', 'Stafford'],
+        description: 'MIDI keyboard and electric guitar repair services covering Lichfield, Tamworth, Sutton Coldfield, Stafford, and the Midlands.',
+        areaServed: ['Lichfield', 'Tamworth', 'Sutton Coldfield', 'Stafford', 'Midlands'],
         priceRange: '££',
       }),
     },
