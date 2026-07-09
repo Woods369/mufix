@@ -12,7 +12,7 @@
         </h1>
         <p class="hero-sub">
           <strong> FREE </strong>Pick-up & Diagnostic checks covering <br> <strong>Lichfield</strong>, <strong>Tamworth</strong>,
-          <strong>Sutton Coldfield</strong> <br> and surrounding <strong>Staffordshire</strong> areas.<br />
+          <strong>Sutton Coldfield</strong>, <strong>Stafford</strong> <br> and the wider <strong>Midlands</strong>.<br />
           Free Diagnostic Checks
         </p>
         <div class="hero-actions">
