@@ -58,7 +58,7 @@
     </section>
 
     <!-- Full-width banner -->
-    <section class="banner-section" style="background-image: url('/musical-instrument-circuitboard.jpg')">
+    <section class="banner-section" style="background-image: url('/AKAI_MPK_CIRCUITBOARD.jpg')">
     </section>
 
     <!-- Services -->
@@ -522,9 +522,9 @@ useHead({
   z-index: 1;
   width: 250px;
   height: 250px;
-  background-repeat: repeat;
-  background-size: 2100px auto;
-  background-position: -100px 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 0;
   opacity: 0.6;
   margin: 150px auto 0;
   border-radius: 50%;
