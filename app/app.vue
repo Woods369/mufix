@@ -5,6 +5,9 @@
         <a href="/" class="logo">mufix</a>
         <nav class="nav">
           <a href="/diagnostic">Diagnostic</a>
+          <NuxtLink v-if="authenticated" to="/orders">Orders</NuxtLink>
+          <button v-if="authenticated" class="nav-logout" @click="handleLogout">Logout</button>
+          <NuxtLink v-if="!authenticated" to="/auth">Login</NuxtLink>
           <a :href="isHome ? '#services' : '/#services'">Services</a>
           <a :href="isHome ? '#contact' : '/#contact'">Contact</a>
         </nav>
@@ -23,9 +26,26 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+const router = useRouter()
 const route = useRoute()
 const isHome = computed(() => route.path === '/')
+const authenticated = ref(false)
+
+onMounted(async () => {
+  try {
+    const res = await $fetch('/api/auth/me')
+    authenticated.value = (res as any).authenticated
+  } catch {
+    authenticated.value = false
+  }
+})
+
+async function handleLogout() {
+  await $fetch('/api/auth/logout', { method: 'POST' })
+  authenticated.value = false
+  await router.push('/')
+}
 </script>
 
 <style>
@@ -138,6 +158,22 @@ body {
 
 .nav a:hover {
   color: var(--text);
+}
+
+.nav-logout {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.nav-logout:hover {
+  color: #ef4444;
 }
 
 .section {

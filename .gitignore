@@ -22,3 +22,6 @@ logs
 .env
 .env.*
 !.env.example
+
+# Local data (JSON file fallback — production uses Vercel KV)
+server/data/

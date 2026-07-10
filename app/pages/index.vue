@@ -8,12 +8,12 @@
         <h1 class="hero-title">
           MIDI keyboards &amp;<br />
           <span class="text-gold">Electrical Intruments</span><br />
-          repaired by hand.
+          repairs.
         </h1>
         <p class="hero-sub">
           <strong> FREE </strong>Pick-up & Diagnostic checks covering <br> <strong>Lichfield</strong>, <strong>Tamworth</strong>,
           <strong>Sutton Coldfield</strong>, <strong>Stafford</strong> <br> and the wider <strong>Midlands</strong>.<br />
-          Free Diagnostic Checks
+          <span>FREE Diagnostic Checks</span>
         </p>
         <div class="hero-actions">
           <a href="#quote" class="btn btn-primary">Book a pickup</a>
@@ -385,6 +385,13 @@ useHead({
   color: var(--text-muted);
   max-width: 400px;
   margin: 0 auto 2rem;
+}
+
+.hero-sub > span {
+  color: var(--gold);
+  padding-top: 50px;
+  font-weight: 700;
+  display: block;
 }
 
 .hero-actions {
