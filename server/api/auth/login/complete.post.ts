@@ -1,11 +1,12 @@
 import { verifyAuthenticationResponse } from '@simplewebauthn/server'
-import { WEBAUTHN_CONFIG } from '../../../utils/webauthn'
+import { getWebAuthnConfig } from '../../../utils/webauthn'
 import { readJSON, writeJSON } from '../../../utils/storage'
 import { setSession } from '../../../utils/session'
 import { getLoginChallenge, clearLoginChallenge } from './begin.post'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
+  const cfg = getWebAuthnConfig(event)
   const expectedChallenge = getLoginChallenge()
 
   if (!expectedChallenge) {
@@ -23,8 +24,8 @@ export default defineEventHandler(async (event) => {
   const verification = await verifyAuthenticationResponse({
     response: body,
     expectedChallenge,
-    expectedOrigin: WEBAUTHN_CONFIG.origin,
-    expectedRPID: WEBAUTHN_CONFIG.rpID,
+    expectedOrigin: cfg.origin,
+    expectedRPID: cfg.rpID,
     credential: {
       id: credential.id,
       publicKey: Buffer.from(credential.publicKey, 'base64'),

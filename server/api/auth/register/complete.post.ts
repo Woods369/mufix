@@ -1,10 +1,11 @@
 import { verifyRegistrationResponse } from '@simplewebauthn/server'
-import { WEBAUTHN_CONFIG } from '../../../utils/webauthn'
+import { getWebAuthnConfig } from '../../../utils/webauthn'
 import { readJSON, writeJSON } from '../../../utils/storage'
 import { getPendingChallenge, clearPendingChallenge } from './begin.post'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
+  const cfg = getWebAuthnConfig(event)
   const expectedChallenge = getPendingChallenge()
 
   if (!expectedChallenge) {
@@ -14,8 +15,8 @@ export default defineEventHandler(async (event) => {
   const verification = await verifyRegistrationResponse({
     response: body,
     expectedChallenge,
-    expectedOrigin: WEBAUTHN_CONFIG.origin,
-    expectedRPID: WEBAUTHN_CONFIG.rpID,
+    expectedOrigin: cfg.origin,
+    expectedRPID: cfg.rpID,
     requireUserVerification: false,
   })
 

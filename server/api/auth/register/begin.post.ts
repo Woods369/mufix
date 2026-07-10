@@ -1,5 +1,5 @@
 import { generateRegistrationOptions } from '@simplewebauthn/server'
-import { WEBAUTHN_CONFIG } from '../../../utils/webauthn'
+import { getWebAuthnConfig } from '../../../utils/webauthn'
 
 // Store challenge in-memory is OK for single-user; challenge verified immediately after
 let _challenge: string = ''
@@ -12,10 +12,11 @@ export function clearPendingChallenge(): void {
   _challenge = ''
 }
 
-export default defineEventHandler(async () => {
+export default defineEventHandler(async (event) => {
+  const cfg = getWebAuthnConfig(event)
   const options = await generateRegistrationOptions({
-    rpName: WEBAUTHN_CONFIG.rpName,
-    rpID: WEBAUTHN_CONFIG.rpID,
+    rpName: cfg.rpName,
+    rpID: cfg.rpID,
     userName: 'mufix-admin',
     userDisplayName: 'Mufix Admin',
     authenticatorSelection: {

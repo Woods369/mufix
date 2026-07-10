@@ -1,5 +1,5 @@
 import { generateAuthenticationOptions } from '@simplewebauthn/server'
-import { WEBAUTHN_CONFIG } from '../../../utils/webauthn'
+import { getWebAuthnConfig } from '../../../utils/webauthn'
 import { readJSON } from '../../../utils/storage'
 
 let _challenge: string = ''
@@ -12,11 +12,12 @@ export function clearLoginChallenge(): void {
   _challenge = ''
 }
 
-export default defineEventHandler(async () => {
+export default defineEventHandler(async (event) => {
+  const cfg = getWebAuthnConfig(event)
   const credentials = await readJSON<any[]>('credentials.json')
 
   const options = await generateAuthenticationOptions({
-    rpID: WEBAUTHN_CONFIG.rpID,
+    rpID: cfg.rpID,
     // Empty allowCredentials = discoverable credential; Flipper picks the right one
     allowCredentials: credentials.length > 0
       ? credentials.map(c => ({
