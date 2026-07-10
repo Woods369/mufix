@@ -7,7 +7,7 @@ import { getLoginChallenge, clearLoginChallenge } from './begin.post'
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const cfg = getWebAuthnConfig(event)
-  const expectedChallenge = getLoginChallenge()
+  const expectedChallenge = await getLoginChallenge()
 
   if (!expectedChallenge) {
     throw createError({ statusCode: 400, statusMessage: 'No pending login' })
@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
     requireUserVerification: false,
   })
 
-  clearLoginChallenge()
+  await clearLoginChallenge()
 
   if (!verification.verified) {
     throw createError({ statusCode: 400, statusMessage: 'Authentication failed' })

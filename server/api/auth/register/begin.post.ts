@@ -1,15 +1,16 @@
 import { generateRegistrationOptions } from '@simplewebauthn/server'
 import { getWebAuthnConfig } from '../../../utils/webauthn'
+import { readJSON, writeJSON, deleteJSON } from '../../../utils/storage'
 
-// Store challenge in-memory is OK for single-user; challenge verified immediately after
-let _challenge: string = ''
+const CHALLENGE_KEY = 'challenge:register'
 
-export function getPendingChallenge(): string {
-  return _challenge
+export async function getPendingChallenge(): Promise<string | null> {
+  const data = await readJSON<{ challenge: string } | null>(CHALLENGE_KEY)
+  return data?.challenge ?? null
 }
 
-export function clearPendingChallenge(): void {
-  _challenge = ''
+export async function clearPendingChallenge(): Promise<void> {
+  await deleteJSON(CHALLENGE_KEY)
 }
 
 export default defineEventHandler(async (event) => {
@@ -27,7 +28,7 @@ export default defineEventHandler(async (event) => {
     attestationType: 'none',
   })
 
-  _challenge = options.challenge
+  await writeJSON(CHALLENGE_KEY, { challenge: options.challenge })
 
   return options
 })

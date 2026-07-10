@@ -76,3 +76,19 @@ export async function writeJSON<T>(filename: string, data: T): Promise<void> {
   }
   return writeJSONFile(filename, data)
 }
+
+export async function deleteJSON(filename: string): Promise<void> {
+  const redis = await getRedis()
+  if (redis) {
+    await redis.del(kvKey(filename))
+    return
+  }
+  // File fallback: delete the file if it exists
+  try {
+    const path = join(DATA_DIR, filename)
+    const { unlink } = await import('node:fs/promises')
+    await unlink(path)
+  } catch {
+    // ignore if file doesn't exist
+  }
+}

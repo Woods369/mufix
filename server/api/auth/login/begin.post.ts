@@ -1,15 +1,16 @@
 import { generateAuthenticationOptions } from '@simplewebauthn/server'
 import { getWebAuthnConfig } from '../../../utils/webauthn'
-import { readJSON } from '../../../utils/storage'
+import { readJSON, writeJSON, deleteJSON } from '../../../utils/storage'
 
-let _challenge: string = ''
+const CHALLENGE_KEY = 'challenge:login'
 
-export function getLoginChallenge(): string {
-  return _challenge
+export async function getLoginChallenge(): Promise<string | null> {
+  const data = await readJSON<{ challenge: string } | null>(CHALLENGE_KEY)
+  return data?.challenge ?? null
 }
 
-export function clearLoginChallenge(): void {
-  _challenge = ''
+export async function clearLoginChallenge(): Promise<void> {
+  await deleteJSON(CHALLENGE_KEY)
 }
 
 export default defineEventHandler(async (event) => {
@@ -28,7 +29,7 @@ export default defineEventHandler(async (event) => {
     userVerification: 'discouraged',
   })
 
-  _challenge = options.challenge
+  await writeJSON(CHALLENGE_KEY, { challenge: options.challenge })
 
   return options
 })

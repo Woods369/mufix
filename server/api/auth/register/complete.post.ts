@@ -6,7 +6,7 @@ import { getPendingChallenge, clearPendingChallenge } from './begin.post'
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const cfg = getWebAuthnConfig(event)
-  const expectedChallenge = getPendingChallenge()
+  const expectedChallenge = await getPendingChallenge()
 
   if (!expectedChallenge) {
     throw createError({ statusCode: 400, statusMessage: 'No pending registration' })
@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
     requireUserVerification: false,
   })
 
-  clearPendingChallenge()
+  await clearPendingChallenge()
 
   if (!verification.verified || !verification.registrationInfo) {
     throw createError({ statusCode: 400, statusMessage: 'Registration verification failed' })
