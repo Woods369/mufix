@@ -37,11 +37,17 @@
             </div>
             <div class="form-group">
               <label>Photos</label>
-              <div class="upload-area" @click="imageInput?.click()" @dragover.prevent @drop.prevent="handleDrop">
+              <div class="upload-area" :class="{ 'upload-area--busy': uploading }" @click="imageInput?.click()" @dragover.prevent @drop.prevent="handleDrop">
                 <input ref="imageInput" type="file" accept="image/*" multiple hidden @change="handleFiles" />
-                <Upload :size="24" />
-                <span>Click or drop photos here</span>
-                <span class="upload-hint">JPEG, PNG, WebP</span>
+                <template v-if="uploading">
+                  <div class="waiting-spinner"></div>
+                  <span>Uploading…</span>
+                </template>
+                <template v-else>
+                  <Upload :size="24" />
+                  <span>Click or drop photos here</span>
+                  <span class="upload-hint">JPEG, PNG, WebP</span>
+                </template>
               </div>
               <div v-if="form.images.length" class="upload-previews">
                 <div v-for="(img, i) in form.images" :key="i" class="upload-preview">
@@ -264,31 +270,40 @@ async function saveNotes() {
 }
 
 // --- Image handling ---
-function readFileAsDataURL(file: File): Promise<string> {
-  return new Promise((resolve) => {
-    const reader = new FileReader()
-    reader.onload = () => resolve(reader.result as string)
-    reader.readAsDataURL(file)
-  })
+const uploading = ref(false)
+
+async function uploadFile(file: File): Promise<string | null> {
+  const fd = new FormData()
+  fd.append('file', file)
+  try {
+    const res = await $fetch<{ url: string }>('/api/upload', { method: 'POST', body: fd })
+    return res.url
+  } catch {
+    return null
+  }
+}
+
+async function processFiles(files: FileList | File[]) {
+  uploading.value = true
+  for (const file of Array.from(files)) {
+    if (file.type.startsWith('image/')) {
+      const url = await uploadFile(file)
+      if (url) form.images.push(url)
+    }
+  }
+  uploading.value = false
 }
 
 async function handleFiles(e: Event) {
   const input = e.target as HTMLInputElement
-  const files = input.files
-  if (!files?.length) return
-  for (const file of files) {
-    if (file.type.startsWith('image/')) {
-      const dataUrl = await readFileAsDataURL(file)
-      form.images.push(dataUrl)
-    }
-  }
+  if (!input.files?.length) return
+  await processFiles(input.files)
   if (imageInput.value) imageInput.value.value = ''
 }
 
-function handleDrop(e: DragEvent) {
-  const files = e.dataTransfer?.files
-  if (!files?.length) return
-  handleFiles({ target: { files } } as unknown as Event)
+async function handleDrop(e: DragEvent) {
+  if (!e.dataTransfer?.files?.length) return
+  await processFiles(e.dataTransfer.files)
 }
 
 function formatDate(ts: number) {
@@ -443,6 +458,12 @@ useHead({ title: 'Repair Orders – Mufix' })
 .upload-area:hover {
   border-color: var(--purple);
   background: rgba(167, 139, 250, 0.04);
+}
+
+.upload-area--busy {
+  cursor: wait;
+  pointer-events: none;
+  opacity: 0.7;
 }
 
 .upload-hint {
