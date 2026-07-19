@@ -1,12 +1,9 @@
-import { getSession } from '../../utils/session'
+import { requireAuth } from '../../utils/session'
 import { readJSON, writeJSON } from '../../utils/storage'
 import { randomUUID } from 'node:crypto'
 
 export default defineEventHandler(async (event) => {
-  const session = await getSession(event)
-  if (!session) {
-    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
-  }
+  await requireAuth(event)
 
   const body = await readBody(event)
   if (!body.product?.trim()) {

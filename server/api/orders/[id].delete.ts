@@ -1,11 +1,8 @@
-import { getSession } from '../../utils/session'
+import { requireAuth } from '../../utils/session'
 import { readJSON, writeJSON } from '../../utils/storage'
 
 export default defineEventHandler(async (event) => {
-  const session = await getSession(event)
-  if (!session) {
-    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
-  }
+  await requireAuth(event)
 
   const id = getRouterParam(event, 'id')
   const orders = await readJSON<any[]>('orders.json')
