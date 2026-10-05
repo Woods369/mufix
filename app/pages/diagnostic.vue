@@ -247,7 +247,7 @@ const coveragePct = computed(() => totalKeys.value ? Math.round((testedCount.val
 const statusLabel = computed(() => {
   if (demoMode.value) return 'Demo keyboard playing'
   if (midiConnected.value) return 'MIDI device connected'
-  if (accessGranted.value) return 'MIDI access granted — waiting for device'
+  if (accessGranted.value) return 'MIDI access granted - waiting for device'
   return 'No MIDI device detected'
 })
 
@@ -393,7 +393,7 @@ async function connectMidi() {
     midiAccess.onstatechange = () => updateDevices()
     updateDevices()
     if (!midiConnected.value) {
-      connectError.value = 'MIDI access granted, but no input device was found. Plug in a USB MIDI keyboard and try again — or use Try demo.'
+      connectError.value = 'MIDI access granted, but no input device was found. Plug in a USB MIDI keyboard and try again - or use Try demo.'
     }
   } catch (e) {
     console.error('MIDI access denied:', e)

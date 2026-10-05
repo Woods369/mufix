@@ -30,7 +30,7 @@
               <div class="form-group">
                 <label for="itype">Type</label>
                 <select id="itype" v-model="form.instrumentType">
-                  <option value="">—</option>
+                  <option value="">-</option>
                   <option value="midi">MIDI / keys</option>
                   <option value="guitar">Guitar / bass</option>
                   <option value="other">Other</option>

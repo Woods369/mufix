@@ -35,7 +35,7 @@ function assertRegistrationAllowed(event: any, credentials: any[]) {
     }
   } else if (isProductionRuntime() && list.length === 0) {
     // First-time prod register still allowed once, but recommend REGISTER_SECRET
-    // No hard fail — lock after first credential is the main control.
+    // No hard fail - lock after first credential is the main control.
   }
 }
 

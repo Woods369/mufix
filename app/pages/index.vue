@@ -35,7 +35,7 @@
         <div class="proof-card">
           <span class="proof-kicker">Bench story</span>
           <h3>Dead velocity lane</h3>
-          <p>Akai MPK — C3–E3 silent. Cleaned contacts, reseated ribbon, keys back at full velocity.</p>
+          <p>Akai MPK - C3-E3 silent. Cleaned contacts, reseated ribbon, keys back at full velocity.</p>
         </div>
         <div class="proof-card">
           <span class="proof-kicker">Electronics</span>
@@ -97,7 +97,7 @@
         </div>
         <div class="showcase-copy">
           <h2>Circuit-board level. Not just part swaps.</h2>
-          <p>We diagnose MIDI controllers and electrics the way musicians actually break them — dead keys, flaky USB, noisy jacks, tired power rails.</p>
+          <p>We diagnose MIDI controllers and electrics the way musicians actually break them - dead keys, flaky USB, noisy jacks, tired power rails.</p>
           <NuxtLink to="/diagnostic" class="showcase-link">Open the free key tester →</NuxtLink>
         </div>
       </div>
@@ -135,7 +135,7 @@
               Whether it's a noisy signal or a snapped neck, we can bring it back to life.
             </p>
             <ul class="card-list card-list--gold">
-              <li>Full setup &mdash; action, intonation, truss rod</li>
+              <li>Full setup - action, intonation, truss rod</li>
               <li>Pickup swaps, re-wiring &amp; shielding</li>
               <li>Fret level, crown &amp; dress</li>
             </ul>
@@ -188,7 +188,7 @@
           <details class="faq-item">
             <summary class="faq-question">How much does a repair cost?</summary>
             <div class="faq-answer">
-              <p>We give a <strong>fixed price quote</strong> after the free diagnostic check &mdash; no surprise add-ons. Simple jobs start from around <strong>&pound;25</strong>, with most repairs falling in the <strong>&pound;35&ndash;&pound;80</strong> range. You approve the price before any work begins.</p>
+              <p>We give a <strong>fixed price quote</strong> after the free diagnostic check - no surprise add-ons. Simple jobs start from around <strong>&pound;25</strong>, with most repairs falling in the <strong>&pound;35-&pound;80</strong> range. You approve the price before any work begins.</p>
             </div>
           </details>
           <details class="faq-item">
@@ -230,7 +230,7 @@
       <div class="container">
         <h2 class="section-title">Get in touch</h2>
         <p class="contact-text">
-          Based in <strong>Lichfield</strong> &mdash; collecting from <strong>Tamworth</strong>,
+          Based in <strong>Lichfield</strong> - collecting from <strong>Tamworth</strong>,
           <strong>Sutton Coldfield</strong>, <strong>Stafford</strong> and surrounding areas.
           Drop us a message and we'll get back to you within 24 hours.
         </p>
@@ -340,7 +340,7 @@ useHead({
             name: 'How much does a repair cost?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'We give a fixed price quote after the free diagnostic check — no surprise add-ons. Simple jobs start from around £25, with most repairs falling in the £35–£80 range. You approve the price before any work begins.',
+              text: 'We give a fixed price quote after the free diagnostic check - no surprise add-ons. Simple jobs start from around £25, with most repairs falling in the £35-£80 range. You approve the price before any work begins.',
             },
           },
           {
@@ -356,7 +356,7 @@ useHead({
             name: 'Do I need to bring my gear to you?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'No — we offer free collection and drop-off across Lichfield, Tamworth, Sutton Coldfield and Stafford. You can also drop off at our Lichfield base if you prefer.',
+              text: 'No - we offer free collection and drop-off across Lichfield, Tamworth, Sutton Coldfield and Stafford. You can also drop off at our Lichfield base if you prefer.',
             },
           },
           {
@@ -372,7 +372,7 @@ useHead({
             name: 'How do I know if my gear can be fixed?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Most issues are fixable — dead keys, crackling outputs, broken jacks, power failures, loose fretwire. The free diagnostic tells you exactly what is wrong and whether it is economical to repair.',
+              text: 'Most issues are fixable - dead keys, crackling outputs, broken jacks, power failures, loose fretwire. The free diagnostic tells you exactly what is wrong and whether it is economical to repair.',
             },
           },
           {
@@ -389,7 +389,7 @@ useHead({
   ],
 })
 
-// Calendly handles the booking — no custom form needed
+// Calendly handles the booking - no custom form needed
 </script>
 
 <style scoped>

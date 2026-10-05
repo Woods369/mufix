@@ -1,6 +1,6 @@
 # Mufix
 
-Nuxt 4 site for **Mufix** — MIDI keyboard & electric guitar repairs (Midlands, UK).
+Nuxt 4 site for **Mufix** - MIDI keyboard & electric guitar repairs (Midlands, UK).
 
 - Public marketing site + Calendly booking
 - Web MIDI diagnostic tool (`/diagnostic`)
@@ -43,9 +43,9 @@ Deploy with **`nuxt build`** (server/API routes). Do not use pure static `genera
 
 ## Scripts
 
-- `npm run dev` — local dev
-- `npm run build` — production build
-- `npm run preview` — preview production build
+- `npm run dev` - local dev
+- `npm run build` - production build
+- `npm run preview` - preview production build
 
 ## Legal
 

@@ -45,7 +45,7 @@ export default defineEventHandler(async (event) => {
   const token = process.env.BLOB_READ_WRITE_TOKEN
 
   if (!token) {
-    // Local only — cap base64 payload size already via MAX_BYTES
+    // Local only - cap base64 payload size already via MAX_BYTES
     const base64 = Buffer.from(file.data).toString('base64')
     return { url: `data:${mime};base64,${base64}` }
   }
