@@ -96,6 +96,9 @@ const icons = Array.from({ length: 30 }, (_, i) => {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .icon-cell, .icon-svg { animation: none !important; opacity: 0.04; }
+}
 @keyframes sway {
   0%, 100% {
     transform: translateX(0) rotate(0deg);

@@ -1,6 +1,7 @@
 import { generateAuthenticationOptions } from '@simplewebauthn/server'
 import { getWebAuthnConfig } from '../../../utils/webauthn'
 import { readJSON, writeJSON, deleteJSON } from '../../../utils/storage'
+import { assertRateLimit } from '../../../utils/rateLimit'
 
 const CHALLENGE_KEY = 'challenge:login'
 
@@ -14,14 +15,16 @@ export async function clearLoginChallenge(): Promise<void> {
 }
 
 export default defineEventHandler(async (event) => {
+  assertRateLimit(event, 'auth-login-begin', 20, 60_000)
+
   const cfg = getWebAuthnConfig(event)
   const credentials = await readJSON<any[]>('credentials.json')
+  const list = Array.isArray(credentials) ? credentials : []
 
   const options = await generateAuthenticationOptions({
     rpID: cfg.rpID,
-    // Empty allowCredentials = discoverable credential; Flipper picks the right one
-    allowCredentials: credentials.length > 0
-      ? credentials.map(c => ({
+    allowCredentials: list.length > 0
+      ? list.map(c => ({
           id: c.id,
           transports: c.transports ?? [],
         }))
@@ -29,7 +32,7 @@ export default defineEventHandler(async (event) => {
     userVerification: 'discouraged',
   })
 
-  await writeJSON(CHALLENGE_KEY, { challenge: options.challenge })
+  await writeJSON(CHALLENGE_KEY, { challenge: options.challenge, createdAt: Date.now() })
 
   return options
 })

@@ -1,25 +1,23 @@
 import type { H3Event } from 'h3'
 import { createHmac, timingSafeEqual } from 'node:crypto'
+import { requireProdSecret } from './env'
 
 const SESSION_NAME = 'mufix_sid'
-const SESSION_SECRET = process.env.SESSION_SECRET || 'mufix-dev-secret-change-in-prod-123abc!'
+const DEV_FALLBACK = 'mufix-dev-secret-change-in-prod-123abc!'
 
 export interface SessionData {
   authenticated: boolean
   credentialId: string
 }
 
-/**
- * Sign a base64 payload with HMAC-SHA256 using SESSION_SECRET.
- * Returns a hex digest.
- */
-function signPayload(payload: string): string {
-  return createHmac('sha256', SESSION_SECRET).update(payload).digest('hex')
+function getSecret(): string {
+  return requireProdSecret('SESSION_SECRET', process.env.SESSION_SECRET, DEV_FALLBACK)
 }
 
-/**
- * Constant-time signature comparison to prevent timing attacks.
- */
+function signPayload(payload: string): string {
+  return createHmac('sha256', getSecret()).update(payload).digest('hex')
+}
+
 function verifySignature(payload: string, sig: string): boolean {
   const expected = signPayload(payload)
   try {
@@ -33,7 +31,6 @@ export async function getSession(event: H3Event): Promise<SessionData | null> {
   const val = getCookie(event, SESSION_NAME)
   if (!val) return null
   try {
-    // Cookie format: <base64_payload>.<hmac_hex>
     const dotIdx = val.lastIndexOf('.')
     if (dotIdx === -1) return null
 
@@ -47,7 +44,7 @@ export async function getSession(event: H3Event): Promise<SessionData | null> {
       return parsed as SessionData
     }
   } catch {
-    // invalid session, ignore
+    // invalid session
   }
   return null
 }
@@ -55,12 +52,13 @@ export async function getSession(event: H3Event): Promise<SessionData | null> {
 export async function setSession(event: H3Event, data: SessionData): Promise<void> {
   const payload = Buffer.from(JSON.stringify(data)).toString('base64')
   const sig = signPayload(payload)
+  const isProd = process.env.NODE_ENV === 'production' || process.env.VERCEL_ENV === 'production'
   setCookie(event, SESSION_NAME, `${payload}.${sig}`, {
     path: '/',
     httpOnly: true,
     sameSite: 'lax',
-    maxAge: 60 * 60 * 24 * 30, // 30 days
-    secure: process.env.NODE_ENV === 'production',
+    maxAge: 60 * 60 * 24 * 14,
+    secure: isProd,
   })
 }
 

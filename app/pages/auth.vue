@@ -5,45 +5,41 @@
         <Usb :size="40" />
       </div>
 
-      <h1 class="auth-title">
-        {{ screenTitle }}
-      </h1>
+      <h1 class="auth-title">{{ screenTitle }}</h1>
       <p class="auth-sub">{{ screenSub }}</p>
 
-      <!-- Error -->
-      <p v-if="error" class="auth-error">{{ error }}</p>
+      <p v-if="error" class="auth-error" role="alert">{{ error }}</p>
 
-      <!-- First-time setup -->
-      <template v-if="!hasCredential && !status">
-        <button class="btn btn-primary auth-btn" @click="register">
+      <template v-if="!hasCredential && registrationOpen && !status">
+        <div v-if="needsRegSecret" class="form-group">
+          <label for="reg-secret">Registration secret</label>
+          <input id="reg-secret" v-model="regSecret" type="password" autocomplete="off" placeholder="Provided setup secret" />
+        </div>
+        <button class="btn btn-primary auth-btn" type="button" @click="register">
           <Usb :size="18" />
           Register device
         </button>
-        <p class="auth-hint">
-          Connect your security key via USB and tap it when prompted.
-        </p>
+        <p class="auth-hint">Connect your security key and tap it when prompted. Registration locks after the first key.</p>
       </template>
 
-      <!-- Registered, not yet logged in -->
+      <template v-else-if="!hasCredential && !registrationOpen && !status">
+        <p class="auth-error">Registration is locked. Ask the site owner if you need access.</p>
+      </template>
+
       <template v-else-if="hasCredential && !status">
-        <button class="btn btn-primary auth-btn" @click="login">
+        <button class="btn btn-primary auth-btn" type="button" @click="login">
           <Usb :size="18" />
           Login
         </button>
-        <p class="auth-hint">
-          Tap your security key when prompted.
-        </p>
-        <button class="auth-link-btn" @click="handleLogoutBeforeReRegister">Register a different key</button>
+        <p class="auth-hint">Tap your security key when prompted.</p>
       </template>
 
-      <!-- Waiting for key -->
-      <div v-if="status === 'waiting'" class="waiting-indicator">
-        <div class="waiting-spinner"></div>
+      <div v-if="status === 'waiting'" class="waiting-indicator" aria-live="polite">
+        <div class="waiting-spinner" />
         <p>Waiting for your security key…</p>
       </div>
 
-      <!-- Success -->
-      <div v-if="status === 'success'" class="success-indicator">
+      <div v-if="status === 'success'" class="success-indicator" aria-live="polite">
         <CheckCircle :size="24" />
         <p>{{ successMessage }}</p>
       </div>
@@ -56,20 +52,27 @@ import { startRegistration, startAuthentication } from '@simplewebauthn/browser'
 import { Usb, CheckCircle } from 'lucide-vue-next'
 
 const router = useRouter()
+const route = useRoute()
 
 const hasCredential = ref(false)
+const registrationOpen = ref(true)
+const needsRegSecret = ref(false)
+const regSecret = ref('')
 const status = ref<'waiting' | 'success' | ''>('')
 const error = ref('')
 const successMessage = ref('')
 
-// Load initial state
 onMounted(async () => {
+  const q = route.query.secret
+  if (typeof q === 'string' && q) regSecret.value = q
+
   try {
-    const res = await $fetch<{ authenticated: boolean; hasCredential: boolean }>('/api/auth/me')
+    const res = await $fetch<{ authenticated: boolean; hasCredential: boolean; registrationOpen?: boolean }>('/api/auth/me')
     hasCredential.value = res.hasCredential
-    if (res.authenticated) {
-      await router.push('/orders')
-    }
+    registrationOpen.value = res.registrationOpen !== false
+    needsRegSecret.value = !res.hasCredential && !!regSecret.value
+    if (!res.hasCredential && route.query.secret) needsRegSecret.value = true
+    if (res.authenticated) await router.push('/orders')
   } catch {
     // server not available
   }
@@ -82,14 +85,26 @@ const screenTitle = computed(() => {
 
 const screenSub = computed(() => {
   if (hasCredential.value) return 'Tap your security key to access the repair dashboard.'
-  return 'Register a security key. You only need to do this once.'
+  return 'One-time setup for the shop admin key.'
 })
+
+function friendlyError(e: unknown): string {
+  const err = e as { data?: { statusMessage?: string }; statusMessage?: string; message?: string }
+  return err?.data?.statusMessage || err?.statusMessage || 'Something went wrong. Try again.'
+}
 
 async function register() {
   error.value = ''
   status.value = 'waiting'
   try {
-    const options = await $fetch<any>('/api/auth/register/begin', { method: 'POST' })
+    const headers: Record<string, string> = {}
+    if (regSecret.value) headers['x-register-secret'] = regSecret.value
+
+    const options = await $fetch<any>('/api/auth/register/begin', {
+      method: 'POST',
+      headers,
+      query: regSecret.value ? { secret: regSecret.value } : undefined,
+    })
     const attResp = await startRegistration({ optionsJSON: options })
     await $fetch('/api/auth/register/complete', {
       method: 'POST',
@@ -99,14 +114,10 @@ async function register() {
     hasCredential.value = true
     status.value = 'success'
     successMessage.value = 'Key registered!'
-
-    // Auto-login
-    setTimeout(async () => {
-      await login()
-    }, 800)
-  } catch (e: any) {
+    setTimeout(() => { login() }, 800)
+  } catch (e: unknown) {
     status.value = ''
-    error.value = e?.message || 'Registration failed. Make sure your key is connected via USB.'
+    error.value = friendlyError(e)
   }
 }
 
@@ -123,18 +134,11 @@ async function login() {
 
     status.value = 'success'
     successMessage.value = 'Logged in!'
-    setTimeout(() => {
-      router.push('/orders')
-    }, 500)
-  } catch (e: any) {
+    setTimeout(() => { router.push('/orders') }, 500)
+  } catch (e: unknown) {
     status.value = ''
-    error.value = e?.message || 'Login failed. Tap your key and try again.'
+    error.value = friendlyError(e)
   }
-}
-
-async function handleLogoutBeforeReRegister() {
-  await $fetch('/api/auth/logout', { method: 'POST' })
-  await register()
 }
 </script>
 
@@ -147,7 +151,6 @@ async function handleLogoutBeforeReRegister() {
   padding: 2rem;
   background: var(--bg);
 }
-
 .auth-card {
   max-width: 420px;
   width: 100%;
@@ -157,7 +160,6 @@ async function handleLogoutBeforeReRegister() {
   padding: 2.5rem;
   text-align: center;
 }
-
 .auth-icon {
   width: 64px;
   height: 64px;
@@ -170,29 +172,13 @@ async function handleLogoutBeforeReRegister() {
   color: var(--purple);
   border: 1px solid rgba(167, 139, 250, 0.2);
 }
-
-.auth-icon.pulse {
-  animation: icon-pulse 1.5s ease-in-out infinite;
-}
-
+.auth-icon.pulse { animation: icon-pulse 1.5s ease-in-out infinite; }
 @keyframes icon-pulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(167, 139, 250, 0.3); }
   50% { box-shadow: 0 0 0 16px rgba(167, 139, 250, 0); }
 }
-
-.auth-title {
-  font-size: 1.5rem;
-  font-weight: 800;
-  margin-bottom: 0.5rem;
-}
-
-.auth-sub {
-  font-size: 0.875rem;
-  color: var(--text-muted);
-  line-height: 1.5;
-  margin-bottom: 2rem;
-}
-
+.auth-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem; }
+.auth-sub { font-size: 0.875rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 2rem; }
 .auth-error {
   font-size: 0.8125rem;
   color: #ef4444;
@@ -201,66 +187,31 @@ async function handleLogoutBeforeReRegister() {
   border-radius: 8px;
   margin-bottom: 1rem;
 }
-
-.auth-btn {
+.form-group { text-align: left; margin-bottom: 1rem; }
+.form-group label { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.35rem; }
+.form-group input {
   width: 100%;
-  padding: 0.875rem;
-  font-size: 1rem;
-}
-
-.auth-hint {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  margin-top: 1rem;
-  opacity: 0.7;
-}
-
-.auth-link-btn {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  font-size: 0.8125rem;
-  cursor: pointer;
-  text-decoration: underline;
-  margin-top: 1.25rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.625rem 0.875rem;
+  color: var(--text);
   font-family: inherit;
 }
-
-.auth-link-btn:hover {
-  color: var(--text);
-}
-
-/* Waiting */
+.auth-btn { width: 100%; padding: 0.875rem; font-size: 1rem; }
+.auth-hint { font-size: 0.75rem; color: var(--text-muted); margin-top: 1rem; opacity: 0.7; }
 .waiting-indicator {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  color: var(--text-muted);
-  font-size: 0.875rem;
+  display: flex; flex-direction: column; align-items: center; gap: 1rem;
+  color: var(--text-muted); font-size: 0.875rem;
 }
-
 .waiting-spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid var(--border);
-  border-top-color: var(--purple);
-  border-radius: 50%;
+  width: 32px; height: 32px; border: 3px solid var(--border);
+  border-top-color: var(--purple); border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Success */
+@keyframes spin { to { transform: rotate(360deg); } }
 .success-indicator {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  color: #4ade80;
-  font-size: 0.9375rem;
-  font-weight: 600;
+  display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+  color: #4ade80; font-size: 0.9375rem; font-weight: 600;
 }
 </style>

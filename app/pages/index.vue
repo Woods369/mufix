@@ -7,7 +7,7 @@
       <div class="container hero-content">
         <h1 class="hero-title">
           MIDI keyboards &amp;<br />
-          <span class="text-gold">Electrical Intruments</span><br />
+          <span class="text-gold">Electric instruments</span><br />
           repairs.
         </h1>
         <p class="hero-sub">
@@ -15,9 +15,37 @@
           <strong>Sutton Coldfield</strong>, <strong>Stafford</strong> <br> and the wider <strong>Midlands</strong>.<br />
           <span>FREE Diagnostic Checks</span>
         </p>
+        <div class="trust-row">
+          <span class="trust-chip">Free collection</span>
+          <span class="trust-chip">Fixed quotes</span>
+          <span class="trust-chip">90-day warranty</span>
+          <span class="trust-chip">Musician-tested</span>
+        </div>
         <div class="hero-actions">
           <a href="#quote" class="btn btn-primary">Book a pickup</a>
-          <a href="#services" class="btn btn-outline">View services</a>
+          <NuxtLink to="/diagnostic" class="btn btn-outline">Try key tester</NuxtLink>
+          <a href="https://wa.me/447814200476" class="btn btn-whatsapp" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Proof strip -->
+    <section class="proof-strip">
+      <div class="container proof-grid">
+        <div class="proof-card">
+          <span class="proof-kicker">Bench story</span>
+          <h3>Dead velocity lane</h3>
+          <p>Akai MPK — C3–E3 silent. Cleaned contacts, reseated ribbon, keys back at full velocity.</p>
+        </div>
+        <div class="proof-card">
+          <span class="proof-kicker">Electronics</span>
+          <h3>Crackly output jack</h3>
+          <p>Strat-style rewire + shielding. Noise floor dropped; stage-ready again same week.</p>
+        </div>
+        <div class="proof-card">
+          <span class="proof-kicker">PCB work</span>
+          <h3>Blown power path</h3>
+          <p>Trace repair + cap swap on a stage piano PSU rail. Fired up, stayed up.</p>
         </div>
       </div>
     </section>
@@ -57,8 +85,22 @@
       </div>
     </section>
 
-    <!-- Full-width banner -->
-    <section class="banner-section" style="background-image: url('/AKAI_MPK_CIRCUITBOARD.jpg')">
+    <!-- Showcase -->
+    <section class="showcase">
+      <div class="showcase-bg" style="background-image: url('/AKAI_MPK_CIRCUITBOARD.jpg')" />
+      <div class="container showcase-inner">
+        <div class="price-card">
+          <p class="price-label">Most repairs</p>
+          <p class="price-range">£35–£80</p>
+          <p class="price-note">Simple jobs from ~£25. You approve a fixed quote before work starts.</p>
+          <a href="#quote" class="btn btn-primary">Get a free diagnostic</a>
+        </div>
+        <div class="showcase-copy">
+          <h2>Circuit-board level. Not just part swaps.</h2>
+          <p>We diagnose MIDI controllers and electrics the way musicians actually break them — dead keys, flaky USB, noisy jacks, tired power rails.</p>
+          <NuxtLink to="/diagnostic" class="showcase-link">Open the free key tester →</NuxtLink>
+        </div>
+      </div>
     </section>
 
     <!-- Services -->
@@ -192,7 +234,11 @@
           <strong>Sutton Coldfield</strong>, <strong>Stafford</strong> and surrounding areas.
           Drop us a message and we'll get back to you within 24 hours.
         </p>
-        <a href="mailto:fix@mufix.co.uk" class="btn btn-primary contact-btn">fix@mufix.co.uk</a>
+        <div class="contact-actions">
+          <a href="mailto:fix@mufix.co.uk" class="btn btn-primary">fix@mufix.co.uk</a>
+          <a href="tel:+447814200476" class="btn btn-outline">07814 200476</a>
+          <a href="https://wa.me/447814200476" class="btn btn-whatsapp" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
       </div>
     </section>
   </div>
@@ -222,7 +268,7 @@ useHead({
         '@context': 'https://schema.org',
         '@type': 'LocalBusiness',
         name: 'Mufix',
-        url: 'https://mufix.co.uk',
+        url: 'https://www.mufix.co.uk',
         email: 'fix@mufix.co.uk',
         telephone: '07814 200476',
         image: 'https://www.mufix.co.uk/musical-instrument-circuitboard.png',
@@ -516,19 +562,159 @@ useHead({
   overflow: hidden;
 }
 
-/* Banner */
-.banner-section {
+.trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1.75rem;
+}
+.trust-chip {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--purple);
+  border: 1px solid rgba(167,139,250,0.28);
+  background: rgba(167,139,250,0.08);
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+}
+.btn-whatsapp {
+  background: #128C7E;
+  color: #fff;
+  border: none;
+}
+.btn-whatsapp:hover { opacity: 0.9; color: #fff; }
+
+.proof-strip {
   position: relative;
   z-index: 1;
-  width: 250px;
-  height: 250px;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: 0;
-  opacity: 0.6;
-  margin: 150px auto 0;
-  border-radius: 50%;
+  padding: 0 0 3rem;
 }
+.proof-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+@media (max-width: 800px) {
+  .proof-grid { grid-template-columns: 1fr; }
+}
+.proof-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem 1.35rem;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.proof-card:hover {
+  border-color: rgba(167,139,250,0.45);
+  transform: translateY(-2px);
+}
+.proof-kicker {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.proof-card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.4rem;
+}
+.proof-card p {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.showcase {
+  position: relative;
+  z-index: 1;
+  margin: 2rem 0 1rem;
+  min-height: 340px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.showcase-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: saturate(1.1) brightness(0.35);
+  transform: scale(1.02);
+}
+.showcase::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(10,9,12,0.92) 0%, rgba(10,9,12,0.55) 55%, rgba(10,9,12,0.3) 100%);
+}
+.showcase-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 2rem;
+  align-items: center;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+@media (max-width: 800px) {
+  .showcase-inner { grid-template-columns: 1fr; }
+}
+.price-card {
+  background: rgba(19,16,22,0.92);
+  border: 1px solid rgba(167,139,250,0.35);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 0 40px rgba(167,139,250,0.12);
+}
+.price-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+.price-range {
+  font-size: clamp(2.5rem, 5vw, 3.25rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, var(--purple), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+.price-note {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+.showcase-copy h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+}
+.showcase-copy p {
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  max-width: 36ch;
+}
+.showcase-link {
+  color: var(--gold);
+  font-weight: 600;
+  text-decoration: none;
+}
+.showcase-link:hover { text-decoration: underline; }
+
 
 /* Cards */
 .cards {
@@ -689,9 +875,11 @@ useHead({
   margin-bottom: 2rem;
 }
 
-.contact-btn {
-  display: table;
-  margin: 0 auto;
+.contact-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 /* FAQ */
